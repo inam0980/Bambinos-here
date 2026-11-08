@@ -127,7 +127,9 @@ def build_graph():
     return g.compile()
 
 
-def run(data_dir="data", out_dir="outputs", as_of="2026-11-04 09:00:00") -> State:
+def run(data_dir="data", out_dir="outputs", as_of="2026-11-04 09:00:00", use_llm: bool = True) -> State:
+    import messages
+    messages.USE_LLM = use_llm
     state: State = {"data_dir": data_dir, "out_dir": out_dir,
                     "as_of": datetime.strptime(as_of, "%Y-%m-%d %H:%M:%S")}
     try:
@@ -143,8 +145,9 @@ if __name__ == "__main__":
     ap.add_argument("--data", default="data")
     ap.add_argument("--out", default="outputs")
     ap.add_argument("--as-of", default="2026-11-04 09:00:00")
+    ap.add_argument("--no-llm", action="store_true", help="use deterministic templates only")
     a = ap.parse_args()
-    s = run(a.data, a.out, a.as_of)
+    s = run(a.data, a.out, a.as_of, use_llm=not a.no_llm)
     m = s["metrics"]
     print(f"As of {m['as_of']}: {m['renewal_invoices']} renewal invoices | "
           f"auto-approved {m['auto_approved_now']} | exceptions {m['exceptions_open']} | "

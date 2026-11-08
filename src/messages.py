@@ -170,7 +170,7 @@ def _call_groq(text: str, recipient: str) -> str:
                                  headers={"Content-Type": "application/json",
                                           "Authorization": f"Bearer {os.environ['GROQ_API_KEY']}",
                                           "User-Agent": "bambinos-renewal-agent"})
-    out = json.loads(urllib.request.urlopen(req, timeout=20).read())
+    out = json.loads(urllib.request.urlopen(req, timeout=8).read())
     return out["choices"][0]["message"]["content"]
 
 
@@ -182,18 +182,22 @@ def _call_gemini(text: str, recipient: str) -> str:
         f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
         data=json.dumps(body).encode(),
         headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
-    out = json.loads(urllib.request.urlopen(req, timeout=20).read())
+    out = json.loads(urllib.request.urlopen(req, timeout=8).read())
     return out["candidates"][0]["content"]["parts"][0]["text"]
 
 
 # Provider chain, tried in order: Groq -> Gemini -> deterministic template.
 PROVIDERS = [("groq", "GROQ_API_KEY", _call_groq), ("gemini", "GEMINI_API_KEY", _call_gemini)]
+USE_LLM = True           # dashboard switches this off for instant loads
 _dead: set = set()        # circuit breaker: a provider that errors is skipped for the rest of the run
 LLM_STATS = {"groq": 0, "gemini": 0, "template": 0, "rejected_by_guard": 0}
 
 
 def polish(text: str, recipient: str) -> str:
     """Rewrite tone with the first working LLM; fall back to the next one, then to the template."""
+    if not USE_LLM:
+        LLM_STATS["template"] += 1
+        return text
     for name, env_key, fn in PROVIDERS:
         if name in _dead or not os.getenv(env_key):
             continue

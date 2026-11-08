@@ -4,3 +4,4 @@ __pycache__/
 .env
 .tokencap/
 AGENTS.md
+outputs_dashboard/

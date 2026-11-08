@@ -13,14 +13,19 @@ st.set_page_config(page_title="Renewal Ops - Morning Board", layout="wide")
 st.title("Renewal -> Scheduling: Ops Morning Board")
 
 as_of = st.sidebar.text_input("As of", "2026-11-04 09:00:00")
+use_llm = st.sidebar.toggle("Polish messages with LLM (Groq -> Gemini)", value=False,
+                            help="Off = instant deterministic templates. On = ~20-40s, needs API key in .env")
+
+
 @st.cache_data(show_spinner="Reconciling 4 tables + drafting messages...")
-def load(as_of: str):
-    return run(str(ROOT / "data"), str(ROOT / "outputs"), as_of)   # cached: LLM is called once per as-of, not per click
+def load(as_of: str, use_llm: bool):
+    # cached per (as_of, use_llm). Writes to outputs_dashboard/ so the committed outputs/ stay untouched.
+    return run(str(ROOT / "data"), str(ROOT / "outputs_dashboard"), as_of, use_llm=use_llm)
 
 
 if st.sidebar.button("Re-run reconciliation"):
     load.clear()
-s = load(as_of)
+s = load(as_of, use_llm)
 m, r = s["metrics"], s["result"]
 cases, ex, msgs = r["cases"], r["exceptions"], pd.DataFrame(s["messages"])
 
