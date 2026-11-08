@@ -121,7 +121,7 @@ with tab_overview:
                 "type": "bar", "name": step, "stack": "h", "barWidth": 14,
                 "itemStyle": {"color": STEP_COLORS[step], "borderRadius": [0, 4, 4, 0]},
                 "data": [round(h, 1) if s == step else None for h, s in zip(w["hours_since_payment"], w["step"])],
-                **({"markLine": {"symbol": "none", "silent": True, "label": {"formatter": "12h SLA"},
+                **({"markLine": {"symbol": "none", "silent": True, "label": {"formatter": "12h SLA", "position": "insideEndTop"},
                                  "lineStyle": {"type": "dashed", "color": "#C0392B"},
                                  "data": [{"xAxis": 12}]}} if i == 0 else {}),
             } for i, step in enumerate(["Step 2 · no form", "Step 3 · Ops queue", "Step 4 · allocation"])]
@@ -130,7 +130,7 @@ with tab_overview:
                 "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}, "valueFormatter": "%.1f h"},
                 "legend": {"bottom": 0},
                 "grid": {"left": 8, "right": 30, "top": 10, "bottom": 34, "containLabel": True},
-                "xAxis": {"type": "value", "name": "hours", "nameLocation": "end"},
+                "xAxis": {"type": "value", "axisLabel": {"formatter": "{value} h"}},
                 "yAxis": {"type": "category", "data": [f"RNW-{i}" for i in w["invoice_id"]]},
                 "series": series,
             }, height=360, alt="Hours each paid renewal has waited since payment, colored by the stuck step")
