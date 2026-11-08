@@ -2,29 +2,29 @@
 
 ## RNW-84902
 - **WhatsApp -> Parent** (`AUTO_APPROVED`)
-  > Hi Ka***k Na***r, Di***a Na***r's renewal for Unbox Maths Level 3 is confirmed! Classes continue in BM-G5-Batch-C on Mon,Wed at 18:00. First class of the new term: 2026-11-09. See you there! - Team Bambinos
+  > Hi Ka***k Na***r, Di***a Na***r's renewal for Unbox Maths Level 3 is confirmed. Classes will continue in BM-G5-Batch-C on Mondays and Wednesdays at 18:00, with the first session of the new term on 2026-11-09. Looking forward to seeing you! - Team Bambinos
 
 ## RNW-84903
 - **WhatsApp -> Parent** (`AUTO_APPROVED`)
-  > Hi Ne***a Ve***a, Ka***r Ve***a's renewal for Little Yogi Gita Level 1 is confirmed! Classes continue in LY-G3-Batch-B on Wed,Fri at 16:30. First class of the new term: 2026-11-06. See you there! - Team Bambinos
+  > Hi Ne***a Ve***a, Ka***r Ve***a's renewal for Little Yogi Gita Level 1 is confirmed. Classes will continue in LY-G3-Batch-B on Wed and Fri at 16:30. The first class of the new term is on 2026-11-06. We look forward to seeing you! Team Bambinos
 
 ## RNW-84904
 - **WhatsApp -> Parent** (`PAYER_CONTACT_MISMATCH`)
-  > Hi Ri***u Iy***r, we received INR 12,000 for An***a Iy***r's renewal - classes are confirmed! The payment came from +91-9844XXXX77, which isn't on An***a Iy***r's profile. Reply YES to add it as a secondary contact for class reminders.
+  > Hi Ri***u Iy***r, we've received INR 12,000 for An***a Iy***r's renewal-classes are confirmed and will continue as scheduled. The payment came from +91-9844XXXX77, which isn't on the profile. Reply YES to add this number as a secondary contact for class reminders.
 - **WhatsApp -> Parent** (`AUTO_APPROVED`)
-  > Hi Ri***u Iy***r, An***a Iy***r's renewal for Young Communicators Level 2 is confirmed! Classes continue in YC-G4-Batch-A on Tue,Thu at 17:00. First class of the new term: 2026-11-05. See you there! - Team Bambinos
+  > Hi Ri***u Iy***r, An***a Iy***r's renewal for Young Communicators Level 2 is confirmed. Classes will continue in YC-G4-Batch-A on Tue and Thu at 17:00, with the first session of the new term on 2026-11-05. We look forward to seeing An***a in class! - Team Bambinos
 
 ## RNW-84905
 - **Slack -> Ops Scheduler** (`FALSE_BATCH_FULL`)
-  > :white_check_mark: RNW-84905 | Booking for Re***h Pa***l failed as 'batch full', but Re***h Pa***l already holds a seat in CM-G4-Batch-D. Auto-reallocated. Please fix the capacity rule to exclude renewing students.
+  > RNW-84905: Fix capacity rule to exclude renewing students (Re***h Pa***l) - SLA: standard response time.
 - **WhatsApp -> Parent** (`AUTO_APPROVED`)
-  > Hi Me***a Pa***l, Re***h Pa***l's renewal for Unbox Chess Level 2 is confirmed! Classes continue in CM-G4-Batch-D on Sat,Sun at 11:00. First class of the new term: 2026-11-07. See you there! - Team Bambinos
+  > Hi Me***a Pa***l, Re***h Pa***l's renewal for Unbox Chess Level 2 is confirmed. Classes will continue in CM-G4-Batch-D on Saturdays and Sundays at 11:00. The first class of the new term is on 2026-11-07. Looking forward to seeing you!
 
 ## RNW-84906
 - **WhatsApp -> Teacher** (`ORPHANED_INVOICE`)
-  > Hi Ms. Rhea B, good news - Zo***a Kh***n's renewal payment (INR 18,000) came in on 2026-11-02 16:00:00. We've auto-renewed them in the same batch. You don't need to fill the renewal form. If the parent wants a different slot, just reply here.
+  > Hi Ms. Rhea B, Zo***a Kh***n's renewal payment (INR 18,000) was received on 2026-11-02 16:00:00 and auto-renewed in the same batch. No action required from you unless the parent requests a different slot; just reply here.
 - **WhatsApp -> Parent** (`AUTO_APPROVED`)
-  > Hi Fa***n Kh***n, Zo***a Kh***n's renewal for Young Communicators GCC Track is confirmed! Classes continue in YC-GCC-Batch-E on Sun,Tue at 19:00. First class of the new term: 2026-11-08. See you there! - Team Bambinos
+  > Hi Fa***n Kh***n, Zo***a Kh***n's renewal for Young Communicators GCC Track is confirmed. Classes will continue in YC-GCC-Batch-E on Sun and Tue at 19:00, with the first class of the new term on 2026-11-08. We look forward to seeing you! - Team Bambinos
 
 ## RNW-84907
 - **Slack -> Ops Lead** (`DISCOUNT_NEEDS_APPROVAL`)
@@ -32,9 +32,9 @@
 
 ## RNW-84908
 - **WhatsApp -> Teacher** (`DUPLICATE_FORM`)
-  > Hi Acharya Nancy S, we got Si***a Ma***a's renewal form twice (browser refresh). We kept one and closed the duplicate - all good.
+  > Hi Acharya Nancy S, we received Si***a Ma***a's renewal form twice due to a browser refresh. We've kept one and closed the duplicate. No action needed on your part.
 - **WhatsApp -> Parent** (`AUTO_APPROVED`)
-  > Hi Ro***n Ma***a, Si***a Ma***a's renewal for Little Yogi Gita US Track is confirmed! Classes continue in LY-US-Batch-G on Sat,Sun at 09:30. First class of the new term: 2026-11-07. See you there! - Team Bambinos
+  > Hi Ro***n Ma***a, Si***a Ma***a's renewal for Little Yogi Gita US Track is confirmed. Classes will continue in LY-US-Batch-G on Saturdays and Sundays at 09:30. The first class of the new term is on 2026-11-07. See you then! - Team Bambinos
 
 ## RNW-84909
 - **Slack -> Ops (Finance)** (`PARTIAL_PAYMENT`)

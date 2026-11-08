@@ -2,3 +2,5 @@ _assets/
 __pycache__/
 *.pyc
 .env
+.tokencap/
+AGENTS.md

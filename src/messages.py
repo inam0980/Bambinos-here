@@ -157,49 +157,61 @@ def _numbers_kept(src: str, new: str) -> bool:
     return all(n in new for n in re.findall(r"\d[\d,]*", src))
 
 
-def _groq_polish(text: str, recipient: str):
-    key = os.getenv("GROQ_API_KEY")
-    if not key:
-        return None
-    system = PROMPT_FILE.read_text(encoding="utf-8") if PROMPT_FILE.exists() else ""
+def _system_prompt() -> str:
+    return PROMPT_FILE.read_text(encoding="utf-8") if PROMPT_FILE.exists() else ""
+
+
+def _call_groq(text: str, recipient: str) -> str:
     body = {"model": os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"), "temperature": 0.2,
-            "messages": [{"role": "system", "content": system},
+            "messages": [{"role": "system", "content": _system_prompt()},
                          {"role": "user", "content": f"RECIPIENT: {recipient}\nDRAFT:\n{text}"}]}
-    try:
-        req = urllib.request.Request("https://api.groq.com/openai/v1/chat/completions",
-                                     data=json.dumps(body).encode(),
-                                     headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}",
-                                              "User-Agent": "bambinos-renewal-agent"})
-        out = json.loads(urllib.request.urlopen(req, timeout=20).read())
-        new = _plain(out["choices"][0]["message"]["content"])
-        return new if new and _numbers_kept(text, new) else text
-    except Exception:
-        return text
+    req = urllib.request.Request("https://api.groq.com/openai/v1/chat/completions",
+                                 data=json.dumps(body).encode(),
+                                 headers={"Content-Type": "application/json",
+                                          "Authorization": f"Bearer {os.environ['GROQ_API_KEY']}",
+                                          "User-Agent": "bambinos-renewal-agent"})
+    out = json.loads(urllib.request.urlopen(req, timeout=20).read())
+    return out["choices"][0]["message"]["content"]
 
 
-def _gemini_polish(text: str, recipient: str) -> str:
-    groq = _groq_polish(text, recipient)
-    if groq is not None:
-        return groq
-    key = os.getenv("GEMINI_API_KEY")
-    if not key:
-        return text
+def _call_gemini(text: str, recipient: str) -> str:
     model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-    system = PROMPT_FILE.read_text(encoding="utf-8") if PROMPT_FILE.exists() else ""
-    body = {"contents": [{"parts": [{"text": f"{system}\n\nRECIPIENT: {recipient}\nDRAFT:\n{text}"}]}]}
-    try:
-        req = urllib.request.Request(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
-            data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
-        out = json.loads(urllib.request.urlopen(req, timeout=20).read())
-        new = out["candidates"][0]["content"]["parts"][0]["text"].strip()
-        # guardrail: every number in the draft must survive the rewrite
-        import re
-        if all(n in new for n in re.findall(r"\d[\d,]*", text)):
+    body = {"systemInstruction": {"parts": [{"text": _system_prompt()}]},
+            "contents": [{"parts": [{"text": f"RECIPIENT: {recipient}\nDRAFT:\n{text}"}]}]}
+    req = urllib.request.Request(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+        data=json.dumps(body).encode(),
+        headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+    out = json.loads(urllib.request.urlopen(req, timeout=20).read())
+    return out["candidates"][0]["content"]["parts"][0]["text"]
+
+
+# Provider chain, tried in order: Groq -> Gemini -> deterministic template.
+PROVIDERS = [("groq", "GROQ_API_KEY", _call_groq), ("gemini", "GEMINI_API_KEY", _call_gemini)]
+_dead: set = set()        # circuit breaker: a provider that errors is skipped for the rest of the run
+LLM_STATS = {"groq": 0, "gemini": 0, "template": 0, "rejected_by_guard": 0}
+
+
+def polish(text: str, recipient: str) -> str:
+    """Rewrite tone with the first working LLM; fall back to the next one, then to the template."""
+    for name, env_key, fn in PROVIDERS:
+        if name in _dead or not os.getenv(env_key):
+            continue
+        try:
+            new = _plain(fn(text, recipient))
+        except Exception as e:  # auth / quota / model / network error -> switch provider
+            _dead.add(name)
+            print(f"[llm] {name} failed ({type(e).__name__}: {str(e)[:80]}); falling back")
+            continue
+        if new and _numbers_kept(text, new):
+            LLM_STATS[name] += 1
             return new
-    except Exception:
-        pass
+        LLM_STATS["rejected_by_guard"] += 1   # LLM dropped/changed a number -> try next provider
+    LLM_STATS["template"] += 1
     return text
+
+
+_gemini_polish = polish   # backward-compatible name
 
 
 def draft_messages(raw_cases, exceptions, approved, schedule_rows):

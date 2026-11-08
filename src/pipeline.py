@@ -150,3 +150,5 @@ if __name__ == "__main__":
           f"auto-approved {m['auto_approved_now']} | exceptions {m['exceptions_open']} | "
           f"already scheduled {m['already_scheduled']}")
     print(json.dumps(m["reason_code_counts"], indent=1))
+    from messages import LLM_STATS
+    print(f"Messages written by: {LLM_STATS}")

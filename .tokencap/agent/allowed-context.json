@@ -1,9 +1,0 @@
-{
-  "src-rules": [
-    "src/**"
-  ],
-  "src-messages": [
-    "dashboard/app.py",
-    "src/**"
-  ]
-}

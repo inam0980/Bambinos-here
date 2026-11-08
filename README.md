@@ -49,7 +49,7 @@ cd src && python pipeline.py --data ../data --out ../outputs --as-of "2026-11-04
 cd .. && streamlit run dashboard/app.py          # Ops Head morning board
 ```
 
-Optional: copy `.env.example` to `.env` and add `GROQ_API_KEY` (or `GEMINI_API_KEY`). The LLM then polishes the message tone. Groq is tried first. Without a key, the deterministic templates are used and everything still works.
+Optional: copy `.env.example` to `.env` and add `GROQ_API_KEY` (or `GEMINI_API_KEY`). The LLM then polishes the message tone. Fallback chain: Groq → Gemini → template. If a provider errors (bad key, quota, model removed), it is skipped for the rest of the run and the next one is used. Without a key, the deterministic templates are used and everything still works.
 If `langgraph` is not installed, the same nodes run one after another as plain Python.
 
 ## Design decisions
