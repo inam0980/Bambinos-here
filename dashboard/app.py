@@ -10,7 +10,11 @@ sys.path.insert(0, str(ROOT / "src"))
 from pipeline import run  # noqa: E402
 from rules import REASON_CODES  # noqa: E402
 
-st.set_page_config(page_title="Renewal ops board", page_icon=":material/event_available:", layout="wide")
+LOGO_FULL = "https://www.bambinos.live/assets/bambinos-logo-full.svg"
+LOGO_MARK = "https://www.bambinos.live/assets/bambinos-logo-mark.svg"
+
+st.set_page_config(page_title="Renewal ops board", page_icon=LOGO_MARK, layout="wide")
+st.logo(LOGO_FULL, icon_image=LOGO_MARK, link="https://www.bambinos.live", size="large")
 
 STAGE_LABELS = {
     "1_PAID_NO_FORM": "Paid, no teacher form",
@@ -24,6 +28,11 @@ STAGE_LABELS = {
 STAGE_STEP = {"1": "Step 2 · no form", "2": "Step 3 · Ops queue", "3": "Step 4 · allocation", "4": "Scheduled"}
 STEP_COLORS = {"Step 2 · no form": "#C0392B", "Step 3 · Ops queue": "#B7791F",
                "Step 4 · allocation": "#13233A", "Scheduled": "#0E7C6B"}
+def md(text) -> str:
+    """Escape masked names like Ka***k so Markdown does not turn *** into bold/italic."""
+    return str(text).replace("*", r"\*")
+
+
 CHANNEL_STYLE = {"WhatsApp": (":material/chat:", "green"), "Slack": (":material/tag:", "violet")}
 
 # ---------------------------------------------------------------- sidebar
@@ -77,19 +86,19 @@ with head_r:
 
 # ---------------------------------------------------------------- KPI wall
 with st.grid(6, min_column_width=150, gap="small"):
-    st.metric("Paid, not scheduled", m["paid_not_scheduled"], f"₹{m['revenue_paid_not_scheduled_inr']:,.0f} in limbo",
+    st.metric("Not scheduled", m["paid_not_scheduled"], f"₹{m['revenue_paid_not_scheduled_inr']:,.0f} paid",
               delta_color="off", delta_arrow="off", border=True, height="stretch",
               icon=":material/hourglass_top:")
     st.metric("Stuck > 12 h", m["paid_not_scheduled_gt_12h"], f"oldest {m['oldest_unscheduled_paid_hours']:.0f} h",
               delta_color="inverse", border=True, height="stretch", icon=":material/warning:")
-    st.metric("Auto-approved now", m["auto_approved_now"], f"{len(sched)} sessions ready",
+    st.metric("Auto-approved", m["auto_approved_now"], f"{len(sched)} sessions",
               delta_color="normal", border=True, height="stretch", icon=":material/task_alt:")
-    st.metric("Open exceptions", m["exceptions_open"], f"{len(blocking)} blocking lines",
+    st.metric("Exceptions", m["exceptions_open"], f"{len(blocking)} blocking",
               delta_color="off", delta_arrow="off", border=True, height="stretch", icon=":material/rule:")
-    st.metric("Orphaned invoice rate", f"{m['orphaned_invoice_rate_pct']}%", "paid, no teacher form",
+    st.metric("Orphan invoices", f"{m['orphaned_invoice_rate_pct']}%", "no teacher form",
               delta_color="off", delta_arrow="off", border=True, height="stretch", icon=":material/link_off:")
     st.metric("Ops time saved", f"{m['manual_minutes_saved_this_run'] / 60:.1f} h",
-              f"{m['manual_minutes_per_renewal_today']} min × {m['auto_approved_now']} renewals",
+              f"{m['auto_approved_now']} × {m['manual_minutes_per_renewal_today']} min",
               delta_color="off", delta_arrow="off", border=True, height="stretch", icon=":material/schedule:")
 
 tab_overview, tab_exc, tab_appr, tab_msg, tab_ledger = st.tabs([
@@ -117,7 +126,8 @@ with tab_overview:
                                  "data": [{"xAxis": 12}]}} if i == 0 else {}),
             } for i, step in enumerate(["Step 2 · no form", "Step 3 · Ops queue", "Step 4 · allocation"])]
             st.echarts_chart({
-                "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}, "valueFormatter": "{value} h"},
+                "animationDuration": 500,
+                "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}, "valueFormatter": "%.1f h"},
                 "legend": {"bottom": 0},
                 "grid": {"left": 8, "right": 30, "top": 10, "bottom": 34, "containLabel": True},
                 "xAxis": {"type": "value", "name": "hours", "nameLocation": "end"},
@@ -126,16 +136,27 @@ with tab_overview:
             }, height=360, alt="Hours each paid renewal has waited since payment, colored by the stuck step")
     with c2:
         with st.container(border=True, height="stretch"):
-            st.markdown("**Where every renewal sits right now** · before the engine runs")
-            stage = cases["current_stage"].map(STAGE_LABELS).fillna(cases["current_stage"]).value_counts()
+            st.markdown("**Before vs after one engine run** · renewals per stage")
+            before = cases["current_stage"].str[0].map(STAGE_STEP).value_counts()
+            after = pd.Series({"Scheduled": int((cases["decision"] != "EXCEPTION").sum()),
+                               "Needs a human": int((cases["decision"] == "EXCEPTION").sum())})
+            cats = ["Step 2 · no form", "Step 3 · Ops queue", "Step 4 · allocation", "Needs a human", "Scheduled"]
             st.echarts_chart({
-                "tooltip": {"trigger": "item", "formatter": "{b}: {c} ({d}%)"},
-                "legend": {"bottom": 0, "type": "scroll"},
-                "series": [{"type": "pie", "radius": ["48%", "72%"], "center": ["50%", "44%"],
-                            "itemStyle": {"borderRadius": 6, "borderWidth": 2},
-                            "label": {"formatter": "{c}"},
-                            "data": [{"name": k, "value": int(v)} for k, v in stage.items()]}],
-            }, height=360, alt="Count of renewals by pipeline stage")
+                "animationDuration": 500,
+                "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}},
+                "legend": {"bottom": 0},
+                "grid": {"left": 8, "right": 24, "top": 10, "bottom": 34, "containLabel": True},
+                "xAxis": {"type": "value", "minInterval": 1},
+                "yAxis": {"type": "category", "data": cats, "inverse": True},
+                "series": [
+                    {"type": "bar", "name": "Today (manual)", "barWidth": 12, "label": {"show": True, "position": "right"},
+                     "itemStyle": {"color": "#B7791F", "borderRadius": [0, 4, 4, 0]},
+                     "data": [int(before.get(c, 0)) or None for c in cats]},
+                    {"type": "bar", "name": "After engine", "barWidth": 12, "label": {"show": True, "position": "right"},
+                     "itemStyle": {"color": "#0E7C6B", "borderRadius": [0, 4, 4, 0]},
+                     "data": [int(after.get(c, 0)) or None for c in cats]},
+                ],
+            }, height=360, alt="Renewals per stage today versus after one engine run")
 
     c3, c4 = st.columns(2, gap="medium")
     with c3:
@@ -147,6 +168,7 @@ with tab_overview:
                 "grid": {"left": 8, "right": 20, "top": 10, "bottom": 10, "containLabel": True},
                 "xAxis": {"type": "value", "minInterval": 1},
                 "yAxis": {"type": "category", "data": [f"{o} · {s}h SLA" for o, s in zip(by_owner["owner"], by_owner["sla"])]},
+                "animationDuration": 500,
                 "series": [{"type": "bar", "data": by_owner["n"].tolist(), "barWidth": 16,
                             "itemStyle": {"color": "#B7791F", "borderRadius": [0, 4, 4, 0]},
                             "label": {"show": True, "position": "right"}}],
@@ -188,11 +210,11 @@ with tab_exc:
                 left, right = st.columns([3, 2])
                 with left:
                     for _, e in grp.iterrows():
-                        st.markdown(f"{e['detail']}")
+                        st.markdown(md(e["detail"]))
                         st.caption(f":material/arrow_forward: {e['recommended_action']}")
                 with right:
                     waited = c.get("hours_since_payment")
-                    st.caption(f"Student **{c.get('student_name')}** · {c.get('class_name')}  \n"
+                    st.caption(f"Student **{md(c.get('student_name'))}** · {c.get('class_name')}  \n"
                                f"Paid ₹{c.get('net_amount', 0):,.0f} · status {c.get('payment_status')}  \n"
                                f"Waiting {waited if pd.notna(waited) else '—'} h · "
                                f"{STAGE_LABELS.get(c['current_stage'], c['current_stage'])}")
@@ -263,7 +285,7 @@ with tab_msg:
                 row.badge(f"{x['channel']} → {x['recipient']}", icon=icon, color=color)
                 row.badge(x["case_id"], color="gray")
                 st.caption(f"`{x['reason_code']}`")
-                st.markdown(x["message"])
+                st.markdown(md(x["message"]))
 
 # ---------------------------------------------------------------- ledger
 with tab_ledger:
