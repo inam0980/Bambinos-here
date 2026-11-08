@@ -1,0 +1,80 @@
+{
+  "version": "0.9",
+  "generatedAt": "2026-11-08T02:13:05.819Z",
+  "techStack": {
+    "languages": [
+      "Python"
+    ],
+    "frameworks": [],
+    "databases": [],
+    "orms": [],
+    "auth": [],
+    "testing": [],
+    "buildTools": [],
+    "cloudSdks": [],
+    "payments": [],
+    "other": [],
+    "packageManager": null,
+    "summary": "Python"
+  },
+  "clusters": [
+    {
+      "name": "Src (rules)",
+      "files": [
+        "src/reconcile.py",
+        "src/rules.py"
+      ],
+      "risk": "MEDIUM",
+      "centralFile": "src/rules.py",
+      "dependsOn": [],
+      "usedBy": [
+        "Src (messages)"
+      ]
+    },
+    {
+      "name": "Src (messages)",
+      "files": [
+        "dashboard/app.py",
+        "src/pipeline.py",
+        "src/messages.py"
+      ],
+      "risk": "LOW",
+      "centralFile": "src/pipeline.py",
+      "dependsOn": [
+        "Src (rules)"
+      ],
+      "usedBy": []
+    }
+  ],
+  "criticalFiles": [],
+  "architecture": {
+    "style": "Routes -> Service Layer",
+    "layers": [
+      "Routes",
+      "Service Layer"
+    ],
+    "criticalChains": [
+      "app.py -> pipeline.py -> messages.py"
+    ]
+  },
+  "riskAreas": [
+    {
+      "cluster": "Src (rules)",
+      "level": "MEDIUM",
+      "files": [
+        "src/reconcile.py",
+        "src/rules.py"
+      ],
+      "reason": "Src (rules) contains 2 modules with elevated risk. Most-connected file: rules.py (2 importers)."
+    }
+  ],
+  "reviewGroups": [],
+  "recentChanges": {
+    "branch": "main",
+    "filesChanged": 0,
+    "riskLevel": "LOW",
+    "featuresAdded": [],
+    "featuresModified": []
+  },
+  "rules": []
+}

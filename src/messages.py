@@ -144,6 +144,14 @@ def _load_env():
 _load_env()
 
 
+def _plain(s: str) -> str:
+    """Normalise LLM typography (non-breaking hyphens, smart quotes) so WhatsApp/Slack/CSV stay clean."""
+    for a, b in {"‐": "-", "‑": "-", "‒": "-", "–": "-", "—": "-", " ": " ",
+                 " ": " ", "‘": "'", "’": "'", "“": '"', "”": '"', "…": "..."}.items():
+        s = s.replace(a, b)
+    return s.strip().strip('"').strip()
+
+
 def _numbers_kept(src: str, new: str) -> bool:
     import re
     return all(n in new for n in re.findall(r"\d[\d,]*", src))
@@ -154,7 +162,7 @@ def _groq_polish(text: str, recipient: str):
     if not key:
         return None
     system = PROMPT_FILE.read_text(encoding="utf-8") if PROMPT_FILE.exists() else ""
-    body = {"model": os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"), "temperature": 0.2,
+    body = {"model": os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"), "temperature": 0.2,
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": f"RECIPIENT: {recipient}\nDRAFT:\n{text}"}]}
     try:
@@ -163,8 +171,8 @@ def _groq_polish(text: str, recipient: str):
                                      headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}",
                                               "User-Agent": "bambinos-renewal-agent"})
         out = json.loads(urllib.request.urlopen(req, timeout=20).read())
-        new = out["choices"][0]["message"]["content"].strip()
-        return new if _numbers_kept(text, new) else text
+        new = _plain(out["choices"][0]["message"]["content"])
+        return new if new and _numbers_kept(text, new) else text
     except Exception:
         return text
 

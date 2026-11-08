@@ -14,4 +14,7 @@ HARD RULES (outputs violating these are discarded by code and the template is se
 1. Keep every number exactly as written (amounts, IDs, dates, times, invoice numbers, links).
 2. Do not add facts, promises, discounts or dates that are not in the draft.
 3. Do not approve, reject or change any decision. You only change wording.
-4. Output only the final message text.
+4. Never assume the child's or parent's gender: no he/she/his/her. Repeat the name or say "your child".
+5. Keep names exactly as written (they are masked, e.g. `Ka***r`); do not "fix" them.
+6. Plain text only: no markdown, no quotes around the message, no emojis unless already in the draft.
+7. Output only the final message text.

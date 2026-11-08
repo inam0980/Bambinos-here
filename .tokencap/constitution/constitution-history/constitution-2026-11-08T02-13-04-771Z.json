@@ -1,0 +1,99 @@
+{
+  "version": "1.2",
+  "generatedAt": "2026-11-08T02:13:04.771Z",
+  "rules": [
+    {
+      "id": "CONST-ARCH-BD3B55",
+      "category": "Architecture",
+      "severity": "HIGH",
+      "confidence": 0.72,
+      "source": "heuristic",
+      "description": "Services cannot import UI components.",
+      "reason": "Importing UI components into services couples server-side logic to browser rendering. This breaks SSR, testability, and separation of concerns.",
+      "whatBreaks": "Server-side services gain browser-only dependencies. Unit tests for services fail. SSR breaks.",
+      "examples": [
+        "Respect the layer boundary described."
+      ],
+      "derivedFrom": [],
+      "relationships": [],
+      "manual": false
+    },
+    {
+      "id": "CONST-ARCH-C8FC0E",
+      "category": "Architecture",
+      "severity": "HIGH",
+      "confidence": 0.72,
+      "source": "heuristic",
+      "description": "Controllers cannot access the database directly.",
+      "reason": "Direct DB access in controllers bypasses the service layer. This breaks the layered architecture and makes logic untestable.",
+      "whatBreaks": "Business logic leaks into controllers. Database coupling makes refactoring expensive.",
+      "examples": [
+        "Respect the layer boundary described."
+      ],
+      "derivedFrom": [],
+      "relationships": [],
+      "manual": false
+    },
+    {
+      "id": "CONST-ARCH-AB5D67",
+      "category": "Architecture",
+      "severity": "HIGH",
+      "confidence": 0.72,
+      "source": "heuristic",
+      "description": "Route handlers cannot access the database directly.",
+      "reason": "Routes should delegate to services/controllers, not query the database themselves.",
+      "whatBreaks": "Business logic scattered across route files. Impossible to test in isolation.",
+      "examples": [
+        "Respect the layer boundary described."
+      ],
+      "derivedFrom": [],
+      "relationships": [],
+      "manual": false
+    },
+    {
+      "id": "CONST-ARCH-5A618E",
+      "category": "Architecture",
+      "severity": "HIGH",
+      "confidence": 0.72,
+      "source": "heuristic",
+      "description": "UI components cannot import server-only modules.",
+      "reason": "Server-only modules may contain secrets or Node.js-only APIs that crash in the browser.",
+      "whatBreaks": "Build errors in browser environments. Potential secret exposure.",
+      "examples": [
+        "Respect the layer boundary described."
+      ],
+      "derivedFrom": [],
+      "relationships": [],
+      "manual": false
+    },
+    {
+      "id": "CONST-SEC-A2EA57",
+      "category": "Security",
+      "severity": "CRITICAL",
+      "confidence": 0.99,
+      "source": "heuristic",
+      "description": "Environment variable files (.env) must never be committed to version control.",
+      "reason": ".env files contain secrets. Committing them exposes credentials to all repository users.",
+      "whatBreaks": "All secrets in .env become public. Immediate security incident.",
+      "examples": [
+        "Ensure .env is in .gitignore.",
+        "Use a secrets manager for production."
+      ],
+      "derivedFrom": [
+        ".env",
+        ".env.example"
+      ],
+      "relationships": [],
+      "manual": false
+    }
+  ],
+  "score": {
+    "total": 91,
+    "architecture": 100,
+    "apiStability": 90,
+    "schemaIntegrity": 90,
+    "security": 85,
+    "compliance": 95
+  },
+  "filesWritten": []
+}

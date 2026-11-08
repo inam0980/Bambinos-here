@@ -1,0 +1,65 @@
+{
+  "version": "0.8",
+  "projectName": "Bambinos",
+  "generatedAt": "2026-11-08T02:13:04.712Z",
+  "projectType": "Python",
+  "techStack": {
+    "languages": [
+      "Python"
+    ],
+    "frameworks": [],
+    "databases": [],
+    "auth": [],
+    "testing": [],
+    "buildTools": [],
+    "cloudSdks": [],
+    "payments": [],
+    "externalServices": []
+  },
+  "architecture": {
+    "style": "Routes -> Service Layer",
+    "layers": [
+      "Routes",
+      "Service Layer"
+    ],
+    "clusters": [
+      {
+        "name": "Src (messages)",
+        "size": 3,
+        "risk": "LOW",
+        "centralFile": "pipeline.py"
+      },
+      {
+        "name": "Src (rules)",
+        "size": 2,
+        "risk": "MEDIUM",
+        "centralFile": "rules.py"
+      }
+    ],
+    "criticalChains": [
+      "app.py -> pipeline.py -> messages.py"
+    ],
+    "evidence": [
+      "app.py -> pipeline.py"
+    ]
+  },
+  "criticalFiles": [],
+  "riskAreas": [
+    {
+      "cluster": "Src (rules)",
+      "level": "MEDIUM",
+      "files": [
+        "src/reconcile.py",
+        "src/rules.py"
+      ],
+      "reason": "Src (rules) contains 2 modules with elevated risk. Most-connected file: rules.py (2 importers)."
+    }
+  ],
+  "reviewGroups": [],
+  "rules": [],
+  "coreFeatures": [
+    "Src (messages)",
+    "Src (rules)"
+  ],
+  "agentInjectHooks": {}
+}

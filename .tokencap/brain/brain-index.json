@@ -1,0 +1,11 @@
+{
+  "src (rules)": [
+    "src/reconcile.py",
+    "src/rules.py"
+  ],
+  "src (messages)": [
+    "dashboard/app.py",
+    "src/pipeline.py",
+    "src/messages.py"
+  ]
+}
