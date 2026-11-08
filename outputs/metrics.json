@@ -1,0 +1,40 @@
+{
+  "as_of": "2026-11-04 09:00",
+  "renewal_invoices": 13,
+  "paid_or_partial": 12,
+  "already_scheduled": 1,
+  "auto_approved_now": 8,
+  "exceptions_open": 4,
+  "paid_not_scheduled": 11,
+  "paid_not_scheduled_gt_12h": 11,
+  "revenue_paid_not_scheduled_inr": 126850.0,
+  "orphaned_invoice_rate_pct": 16.7,
+  "teacher_forms_pending_ops": 8,
+  "duplicate_form_rate_pct": 8.3,
+  "form_data_error_rate_pct": 25.0,
+  "median_payment_to_schedule_hours": 1.7,
+  "oldest_unscheduled_paid_hours": 66.7,
+  "straight_through_rate_pct": 66.7,
+  "exceptions_by_owner": {
+    "Ops (Finance)": 1,
+    "Ops Lead": 1,
+    "Ops Scheduler": 1,
+    "Parent": 1
+  },
+  "reason_code_counts": {
+    "ORPHANED_INVOICE": 2,
+    "STUCK_AT_ALLOCATION": 1,
+    "PAYER_CONTACT_MISMATCH": 1,
+    "FALSE_BATCH_FULL": 1,
+    "DISCOUNT_NEEDS_APPROVAL": 1,
+    "DUPLICATE_FORM": 1,
+    "PARTIAL_PAYMENT": 1,
+    "TEACHER_AMOUNT_MISMATCH": 1,
+    "PAYMENT_FAILED": 1,
+    "BATCH_CHANGE_NO_MATCH": 1,
+    "NAME_ENCODING_ANOMALY": 1,
+    "INVOICE_REF_AUTOCORRECTED": 1
+  },
+  "manual_minutes_saved_this_run": 160,
+  "manual_minutes_per_renewal_today": 20
+}

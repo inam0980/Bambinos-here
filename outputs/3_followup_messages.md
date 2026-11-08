@@ -1,0 +1,69 @@
+# Follow-up messages (auto-drafted)
+
+## RNW-84902
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Ka***k Na***r, Di***a Na***r's renewal for Unbox Maths Level 3 is confirmed! Classes continue in BM-G5-Batch-C on Mon,Wed at 18:00. First class of the new term: 2026-11-09. See you there! - Team Bambinos
+
+## RNW-84903
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Ne***a Ve***a, Ka***r Ve***a's renewal for Little Yogi Gita Level 1 is confirmed! Classes continue in LY-G3-Batch-B on Wed,Fri at 16:30. First class of the new term: 2026-11-06. See you there! - Team Bambinos
+
+## RNW-84904
+- **WhatsApp -> Parent** (`PAYER_CONTACT_MISMATCH`)
+  > Hi Ri***u Iy***r, we received INR 12,000 for An***a Iy***r's renewal - classes are confirmed! The payment came from +91-9844XXXX77, which isn't on An***a Iy***r's profile. Reply YES to add it as a secondary contact for class reminders.
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Ri***u Iy***r, An***a Iy***r's renewal for Young Communicators Level 2 is confirmed! Classes continue in YC-G4-Batch-A on Tue,Thu at 17:00. First class of the new term: 2026-11-05. See you there! - Team Bambinos
+
+## RNW-84905
+- **Slack -> Ops Scheduler** (`FALSE_BATCH_FULL`)
+  > :white_check_mark: RNW-84905 | Booking for Re***h Pa***l failed as 'batch full', but Re***h Pa***l already holds a seat in CM-G4-Batch-D. Auto-reallocated. Please fix the capacity rule to exclude renewing students.
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Me***a Pa***l, Re***h Pa***l's renewal for Unbox Chess Level 2 is confirmed! Classes continue in CM-G4-Batch-D on Sat,Sun at 11:00. First class of the new term: 2026-11-07. See you there! - Team Bambinos
+
+## RNW-84906
+- **WhatsApp -> Teacher** (`ORPHANED_INVOICE`)
+  > Hi Ms. Rhea B, good news - Zo***a Kh***n's renewal payment (INR 18,000) came in on 2026-11-02 16:00:00. We've auto-renewed them in the same batch. You don't need to fill the renewal form. If the parent wants a different slot, just reply here.
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Fa***n Kh***n, Zo***a Kh***n's renewal for Young Communicators GCC Track is confirmed! Classes continue in YC-GCC-Batch-E on Sun,Tue at 19:00. First class of the new term: 2026-11-08. See you there! - Team Bambinos
+
+## RNW-84907
+- **Slack -> Ops Lead** (`DISCOUNT_NEEDS_APPROVAL`)
+  > :moneybag: RNW-84907 | Ms. Simran D gave Vi***n Jo***i a discount: paid INR 7,600 vs list INR 9,500. Above 10% teacher limit. Reply APPROVE / REJECT. SLA 4h.
+
+## RNW-84908
+- **WhatsApp -> Teacher** (`DUPLICATE_FORM`)
+  > Hi Acharya Nancy S, we got Si***a Ma***a's renewal form twice (browser refresh). We kept one and closed the duplicate - all good.
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Ro***n Ma***a, Si***a Ma***a's renewal for Little Yogi Gita US Track is confirmed! Classes continue in LY-US-Batch-G on Sat,Sun at 09:30. First class of the new term: 2026-11-07. See you there! - Team Bambinos
+
+## RNW-84909
+- **Slack -> Ops (Finance)** (`PARTIAL_PAYMENT`)
+  > :warning: RNW-84909 | Ad***t Ku***i paid installment 1 (INR 5,250) of INR 10,500. Teacher form says INR 10,500. Decide: approve under installment policy or hold. SLA 12h.
+- **WhatsApp -> Parent** (`PARTIAL_PAYMENT`)
+  > Hi Sn***a Ku***i, thank you! We've received INR 5,250 (installment 1) for Ad***t Ku***i's renewal. The second installment link will be shared before it's due. - Team Bambinos
+
+## RNW-84910
+- **WhatsApp -> Teacher** (`ORPHANED_INVOICE`)
+  > Hi Coach Arvind K, good news - My***a Re***y's renewal payment (INR 11,000) came in on 2026-11-03 11:20:45. We've auto-renewed them in the same batch. You don't need to fill the renewal form. If the parent wants a different slot, just reply here.
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Vi***m Re***y, My***a Re***y's renewal for Unbox Chess Level 1 is confirmed! Classes continue in CM-G2-Batch-I on Wed,Fri at 17:00. First class of the new term: 2026-11-06. See you there! - Team Bambinos
+
+## RNW-84911
+- **WhatsApp -> Parent** (`PAYMENT_FAILED`)
+  > Hi An***i Gu***a, we tried to confirm Is***n Gu***a's renewal for Young Communicators Level 1 but the payment of INR 12,000 did not go through (bank status: failed, no money was deducted on our side). Please retry here: https://bambinos.live/invoice/BMB-INV-2026-84911. Is***n Gu***a's current classes continue meanwhile. - Team Bambinos
+- **WhatsApp -> Teacher** (`PAYMENT_FAILED`)
+  > Hi Ms. Simran D, renewal form 3311 for Is***n Gu***a cannot be approved: the gateway shows invoice 84911 as FAILED. A UPI 'processing' screenshot is not proof of payment. We've sent the parent a retry link - no action needed from you.
+
+## RNW-84912
+- **Slack -> Ops Scheduler** (`BATCH_CHANGE_NO_MATCH`)
+  > :calendar: RNW-84912 | Ta***a Me***n (Little Yogi Gita Level 1) paid & wants Sat,Sun 11:00:00. No existing batch matches. Options: open a new batch / offer nearest slot. Student stays in current batch until moved - no class gap. SLA 24h.
+- **WhatsApp -> Parent** (`BATCH_CHANGE_NO_MATCH`)
+  > Hi De***k Me***n, thanks for renewing Ta***a Me***n! We're finding a Sat,Sun 11:00:00 slot as requested. Until then Ta***a Me***n continues in the current batch so no class is missed. We'll confirm the new timing within 24 hours. - Team Bambinos
+
+## RNW-84913
+- **Slack -> Ops Agent** (`NAME_ENCODING_ANOMALY`)
+  > :abc: RNW-84913 | Parent name on invoice 84913 contains non-Latin look-alike letters. Normalise in CRM to avoid search/match misses.
+- **WhatsApp -> Teacher** (`INVOICE_REF_AUTOCORRECTED`)
+  > Hi Ms. Mary M, small fix: form 3313 had invoice 84931; the correct one is 84913. We've corrected it and renewed De***a Me***a. Nothing else needed.
+- **WhatsApp -> Parent** (`AUTO_APPROVED`)
+  > Hi Ar***n Ме***a, De***a Me***a's renewal for Unbox Science Level 1 is confirmed! Classes continue in SC-G4-Batch-K on Tue,Thu at 18:00. First class of the new term: 2026-11-05. See you there! - Team Bambinos
