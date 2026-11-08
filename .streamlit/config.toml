@@ -1,69 +1,41 @@
-# Ops board theme: teal brand (matches the case report), compact dashboard spacing, light + dark.
+# Colourful Bambinos ops board theme (light, locked so the gradients always look right).
 [theme]
+base = "light"
+primaryColor = "#7C3AED"
+backgroundColor = "#F7F6FF"
+secondaryBackgroundColor = "#EEF0FF"
+codeBackgroundColor = "#F1EEFF"
+textColor = "#1E1B4B"
+linkColor = "#6D28D9"
+borderColor = "#DDD6FE"
+greenColor = "#10B981"
+redColor = "#EF4444"
+yellowColor = "#F59E0B"
+orangeColor = "#F97316"
+blueColor = "#3B82F6"
+violetColor = "#7C3AED"
+grayColor = "#6B7280"
+chartCategoricalColors = ["#7C3AED", "#EC4899", "#F97316", "#10B981", "#06B6D4", "#3B82F6", "#F59E0B", "#EF4444"]
+dataframeBorderColor = "#E4E0FF"
+dataframeHeaderBackgroundColor = "#EDE9FE"
+dataframeHeaderTextColor = "#3B0764"
 showWidgetBorder = true
-showSidebarBorder = true
-baseRadius = "8px"
-buttonRadius = "8px"
-font = "'Inter':https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-headingFont = "'Inter':https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap"
+showSidebarBorder = false
+baseRadius = "12px"
+buttonRadius = "999px"
+font = "'Poppins':https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+headingFont = "'Poppins':https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap"
 codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
 baseFontSize = 14
 codeFontSize = "12.5px"
-headingFontSizes = ["28px", "20px", "16px", "14px", "13px", "12px"]
-headingFontWeights = [700, 600, 600, 600, 500, 500]
-metricValueFontWeight = 700
+headingFontWeights = [800, 700, 600, 600, 600, 500]
 linkUnderline = false
 paddingTop = "1rem"
 paddingBottom = "3rem"
 
-[theme.light]
-primaryColor = "#0E7C6B"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F3F6F8"
-codeBackgroundColor = "#EEF2F5"
-textColor = "#13233A"
-linkColor = "#0E7C6B"
-borderColor = "#D5DCE3"
-greenColor = "#0E7C6B"
-redColor = "#C0392B"
-yellowColor = "#B7791F"
-orangeColor = "#C2621A"
-blueColor = "#2B6CB0"
-violetColor = "#6B46C1"
-grayColor = "#5F6B7A"
-chartCategoricalColors = ["#0E7C6B", "#13233A", "#B7791F", "#C0392B", "#2B6CB0", "#6B46C1", "#5F6B7A", "#7FB8AE"]
-dataframeBorderColor = "#D5DCE3"
-dataframeHeaderBackgroundColor = "#E8EDF2"
-dataframeHeaderTextColor = "#13233A"
-
-[theme.dark]
-primaryColor = "#3FB8A3"
-backgroundColor = "#0E1726"
-secondaryBackgroundColor = "#172235"
-codeBackgroundColor = "#172235"
-textColor = "#E8EEF5"
-linkColor = "#7FD3C4"
-borderColor = "#2A3850"
-greenColor = "#3FB8A3"
-redColor = "#F07167"
-yellowColor = "#F2B544"
-orangeColor = "#F59E5B"
-blueColor = "#6FA8E8"
-violetColor = "#A78BFA"
-grayColor = "#94A3B8"
-chartCategoricalColors = ["#3FB8A3", "#9FB3CC", "#F2B544", "#F07167", "#6FA8E8", "#A78BFA", "#94A3B8", "#7FD3C4"]
-dataframeBorderColor = "#2A3850"
-dataframeHeaderBackgroundColor = "#172235"
-dataframeHeaderTextColor = "#E8EEF5"
-
-[theme.light.sidebar]
-backgroundColor = "#F3F6F8"
+[theme.sidebar]
+backgroundColor = "#EDE9FE"
 secondaryBackgroundColor = "#FFFFFF"
-textColor = "#13233A"
-borderColor = "#D5DCE3"
-
-[theme.dark.sidebar]
-backgroundColor = "#0A111D"
-secondaryBackgroundColor = "#172235"
-textColor = "#E8EEF5"
-borderColor = "#2A3850"
+textColor = "#2E1065"
+borderColor = "#C4B5FD"
+primaryColor = "#7C3AED"
