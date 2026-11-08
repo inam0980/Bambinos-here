@@ -13,7 +13,14 @@ st.set_page_config(page_title="Renewal Ops - Morning Board", layout="wide")
 st.title("Renewal -> Scheduling: Ops Morning Board")
 
 as_of = st.sidebar.text_input("As of", "2026-11-04 09:00:00")
-s = run(str(ROOT / "data"), str(ROOT / "outputs"), as_of)
+@st.cache_data(show_spinner="Reconciling 4 tables + drafting messages...")
+def load(as_of: str):
+    return run(str(ROOT / "data"), str(ROOT / "outputs"), as_of)   # cached: LLM is called once per as-of, not per click
+
+
+if st.sidebar.button("Re-run reconciliation"):
+    load.clear()
+s = load(as_of)
 m, r = s["metrics"], s["result"]
 cases, ex, msgs = r["cases"], r["exceptions"], pd.DataFrame(s["messages"])
 
@@ -32,16 +39,16 @@ c1, c2 = st.columns(2)
 with c1:
     st.subheader("Blocking exceptions (needs a human)")
     b = ex[ex["severity"] == "BLOCKING"]
-    st.dataframe(b[["case_id", "reason_code", "owner", "sla_hours", "detail"]], hide_index=True, use_container_width=True)
+    st.dataframe(b[["case_id", "reason_code", "owner", "sla_hours", "detail"]], hide_index=True, width="stretch")
 with c2:
     st.subheader("Exceptions by owner")
     st.bar_chart(b.groupby("owner").size())
 
 st.subheader("Auto-approved -> ready for class_schedule_bookings")
-st.dataframe(r["approved"], hide_index=True, use_container_width=True)
+st.dataframe(r["approved"], hide_index=True, width="stretch")
 
 st.subheader("Advisory notes (auto-handled, FYI)")
-st.dataframe(ex[ex["severity"] == "ADVISORY"][["case_id", "reason_code", "owner", "detail"]], hide_index=True, use_container_width=True)
+st.dataframe(ex[ex["severity"] == "ADVISORY"][["case_id", "reason_code", "owner", "detail"]], hide_index=True, width="stretch")
 
 st.subheader("Drafted follow-ups")
 who = st.selectbox("Recipient", ["All"] + sorted(msgs["recipient"].unique()))
@@ -50,4 +57,4 @@ for _, x in view.iterrows():
     st.markdown(f"**{x['case_id']} · {x['channel']} -> {x['recipient']}** `{x['reason_code']}`\n\n> {x['message']}")
 
 st.subheader("Full reconciliation ledger")
-st.dataframe(cases, hide_index=True, use_container_width=True)
+st.dataframe(cases, hide_index=True, width="stretch")
